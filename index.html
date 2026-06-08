@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard Sampah Desa Buahbatu</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    body {
+      background: #eef3f3;
+      font-family: Arial, sans-serif;
+    }
+
+    .topbar {
+      background: #1F6366;
+      color: white;
+      padding: 22px 30px;
+      box-shadow: 0 4px 16px rgba(0,0,0,.25);
+    }
+
+    .topbar h3 {
+      margin: 0;
+      font-weight: 700;
+      letter-spacing: .4px;
+    }
+
+    .topbar small {
+      opacity: .9;
+    }
+
+    .main-wrapper {
+      padding: 24px;
+    }
+
+    .kpi-card {
+      border: none;
+      border-radius: 18px;
+      box-shadow: 0 8px 20px rgba(0,0,0,.12);
+      overflow: hidden;
+      height: 100%;
+    }
+
+    .kpi-strip {
+      height: 6px;
+      background: #1F6366;
+    }
+
+    .kpi-title {
+      font-size: 13px;
+      color: #667;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .kpi-value {
+      font-size: 30px;
+      font-weight: 800;
+      color: #1F6366;
+      margin-top: 6px;
+    }
+
+    .kpi-sub {
+      font-size: 12px;
+      color: #777;
+    }
+
+    .panel {
+      border: none;
+      border-radius: 18px;
+      box-shadow: 0 8px 20px rgba(0,0,0,.12);
+      overflow: hidden;
+    }
+
+    .panel-header {
+      background: white;
+      border-bottom: 1px solid #e5e5e5;
+      padding: 14px 18px;
+      font-weight: 700;
+      color: #1F6366;
+    }
+
+    .panel-body {
+      background: white;
+      padding: 18px;
+    }
+
+    .table thead th {
+      background: #1F6366;
+      color: white;
+      text-align: center;
+      vertical-align: middle;
+      font-size: 13px;
+    }
+
+    .table tbody td {
+      vertical-align: middle;
+      font-size: 13px;
+    }
+
+    .footer {
+      text-align: center;
+      color: #777;
+      font-size: 12px;
+      padding: 20px;
+    }
+
+    canvas {
+      max-height: 360px;
+    }
+
+    .loading-box {
+      background: white;
+      border-radius: 18px;
+      padding: 20px;
+      box-shadow: 0 8px 20px rgba(0,0,0,.12);
+      color: #1F6366;
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="topbar">
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+      <div>
+        <h3>♻ Dashboard Rekapitulasi Pemilahan Sampah</h3>
+        <small>Desa Buahbatu — Monitoring Data Survey per RW</small>
+      </div>
+
+      <div>
+        <a
+          href="https://docs.google.com/spreadsheets/d/1C75BmPB3RhQmBK9GHiURyLZElot4_rlqddRtfQwTrfg/edit?gid=175917028#gid=175917028"
+          target="_blank"
+          class="btn btn-light fw-bold"
+        >
+          📊 Buka Spreadsheet
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="main-wrapper">
+
+    <div id="loading" class="loading-box mb-4">
+      Memuat data dashboard...
+    </div>
+
+    <div class="row g-3 mb-4">
+
+      <div class="col-md-3">
+        <div class="card kpi-card">
+          <div class="kpi-strip"></div>
+          <div class="card-body">
+            <div class="kpi-title">Sudah Memilah</div>
+            <div id="avgSudah" class="kpi-value">0%</div>
+            <div id="totalSudah" class="kpi-sub">0 warga</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="card kpi-card">
+          <div class="kpi-strip"></div>
+          <div class="card-body">
+            <div class="kpi-title">Belum Memilah</div>
+            <div id="avgBelum" class="kpi-value">0%</div>
+            <div id="totalBelum" class="kpi-sub">0 warga</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="card kpi-card">
+          <div class="kpi-strip"></div>
+          <div class="card-body">
+            <div class="kpi-title">Sampah Organik</div>
+            <div id="avgOrganik" class="kpi-value">0%</div>
+            <div id="totalOrganikKg" class="kpi-sub">0 Kg/Hari</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="card kpi-card">
+          <div class="kpi-strip"></div>
+          <div class="card-body">
+            <div class="kpi-title">Sampah Anorganik</div>
+            <div id="avgAnorganik" class="kpi-value">0%</div>
+            <div id="totalAnorganikKg" class="kpi-sub">0 Kg/Hari</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="row g-4">
+
+      <div class="col-lg-6">
+        <div class="panel">
+          <div class="panel-header">Persentase Warga Sudah & Belum Memilah per RW</div>
+          <div class="panel-body">
+            <canvas id="chartPemilahan"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-6">
+        <div class="panel">
+          <div class="panel-header">Persentase Timbulan Sampah Organik & Anorganik per RW</div>
+          <div class="panel-body">
+            <canvas id="chartKomposisi"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-6">
+        <div class="panel">
+          <div class="panel-header">Timbulan Sampah Organik & Anorganik Kg/Hari</div>
+          <div class="panel-body">
+            <canvas id="chartKg"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-6">
+        <div class="panel">
+          <div class="panel-header">Total Timbulan Sampah per RW Kg/Hari</div>
+          <div class="panel-body">
+            <canvas id="chartTotalTimbulan"></canvas>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="panel mt-4">
+      <div class="panel-header">Tabel Rekapitulasi Data Survey Desa Buahbatu</div>
+      <div class="panel-body">
+        <div class="table-responsive">
+          <table class="table table-bordered table-hover">
+            <thead>
+              <tr>
+                <th>RW</th>
+                <th>Jumlah KK</th>
+                <th>Total Responden</th>
+                <th>% Responden</th>
+                <th>Sudah Memilah</th>
+                <th>% Sudah</th>
+                <th>Belum Memilah</th>
+                <th>% Belum</th>
+                <th>Organik Kg/Hari</th>
+                <th>% Organik</th>
+                <th>Anorganik Kg/Hari</th>
+                <th>% Anorganik</th>
+                <th>Total Timbulan Kg</th>
+              </tr>
+            </thead>
+            <tbody id="tableBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer">
+    Dashboard Persampahan Desa Buahbatu | Data bersumber dari Google Spreadsheet
+  </div>
+
+<script>
+  const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxZiecpHaBY9kD8Uj8szikrbGmjsEYwCJmewTeLkrNwlpu8yfnTttWxxeLvRbQjYhq2Kg/exec';
+
+  let chartPemilahan;
+  let chartKomposisi;
+  let chartKg;
+  let chartTotalTimbulan;
+
+  loadDashboardData();
+
+  function loadDashboardData() {
+    const callbackName = 'dashboardCallback_' + Date.now();
+
+    window[callbackName] = function(res) {
+      renderDashboard(res);
+
+      const oldScript = document.getElementById(callbackName);
+      if (oldScript) oldScript.remove();
+
+      delete window[callbackName];
+    };
+
+    const script = document.createElement('script');
+    script.id = callbackName;
+    script.src = APPS_SCRIPT_URL + '?action=data&callback=' + callbackName + '&t=' + Date.now();
+
+    script.onerror = function() {
+      document.getElementById('loading').innerHTML =
+        'Gagal memuat data. Periksa URL Web App Apps Script dan akses deploy.';
+    };
+
+    document.body.appendChild(script);
+  }
+
+  function renderDashboard(res) {
+    if (!res || res.status === 'error') {
+      document.getElementById('loading').innerHTML =
+        'Terjadi kesalahan: ' + (res.message || 'Data tidak dapat dimuat');
+      return;
+    }
+
+    document.getElementById('loading').style.display = 'none';
+
+    const data = res.data;
+    const s = res.summary;
+
+    document.getElementById('avgSudah').innerText = formatPercent(s.avgSudah);
+    document.getElementById('avgBelum').innerText = formatPercent(s.avgBelum);
+    document.getElementById('avgOrganik').innerText = formatPercent(s.avgOrganik);
+    document.getElementById('avgAnorganik').innerText = formatPercent(s.avgAnorganik);
+
+    document.getElementById('totalSudah').innerText = formatNumber(s.totalSudah) + ' warga';
+    document.getElementById('totalBelum').innerText = formatNumber(s.totalBelum) + ' warga';
+    document.getElementById('totalOrganikKg').innerText = formatNumber(s.totalOrganikKg) + ' Kg/Hari';
+    document.getElementById('totalAnorganikKg').innerText = formatNumber(s.totalAnorganikKg) + ' Kg/Hari';
+
+    const labels = data.map(r => 'RW ' + r.rw);
+
+    const persenSudah = data.map(r => r.persenSudahMemilah);
+    const persenBelum = data.map(r => r.persenBelumMemilah);
+
+    const persenOrganik = data.map(r => r.persenOrganik);
+    const persenAnorganik = data.map(r => r.persenAnorganik);
+
+    const organikKg = data.map(r => r.organikKg);
+    const anorganikKg = data.map(r => r.anorganikKg);
+    const totalTimbulan = data.map(r => r.totalTimbulan);
+
+    renderTable(data);
+
+    if (chartPemilahan) chartPemilahan.destroy();
+    if (chartKomposisi) chartKomposisi.destroy();
+    if (chartKg) chartKg.destroy();
+    if (chartTotalTimbulan) chartTotalTimbulan.destroy();
+
+    chartPemilahan = new Chart(document.getElementById('chartPemilahan'), {
+      type: 'bar',
+      data: {
+        labels,
+        datasets: [
+          {
+            label: 'Sudah Memilah (%)',
+            data: persenSudah,
+            backgroundColor: '#1F6366'
+          },
+          {
+            label: 'Belum Memilah (%)',
+            data: persenBelum,
+            backgroundColor: '#F28C28'
+          }
+        ]
+      },
+      options: chartPercentOptions()
+    });
+
+    chartKomposisi = new Chart(document.getElementById('chartKomposisi'), {
+      type: 'bar',
+      data: {
+        labels,
+        datasets: [
+          {
+            label: 'Organik (%)',
+            data: persenOrganik,
+            backgroundColor: '#2E8B57'
+          },
+          {
+            label: 'Anorganik (%)',
+            data: persenAnorganik,
+            backgroundColor: '#C0392B'
+          }
+        ]
+      },
+      options: chartPercentOptions()
+    });
+
+    chartKg = new Chart(document.getElementById('chartKg'), {
+      type: 'bar',
+      data: {
+        labels,
+        datasets: [
+          {
+            label: 'Organik Kg/Hari',
+            data: organikKg,
+            backgroundColor: '#2E8B57'
+          },
+          {
+            label: 'Anorganik Kg/Hari',
+            data: anorganikKg,
+            backgroundColor: '#C0392B'
+          }
+        ]
+      },
+      options: chartNumberOptions('Kg/Hari')
+    });
+
+    chartTotalTimbulan = new Chart(document.getElementById('chartTotalTimbulan'), {
+      type: 'bar',
+      data: {
+        labels,
+        datasets: [
+          {
+            label: 'Total Timbulan Sampah Kg/Hari',
+            data: totalTimbulan,
+            backgroundColor: '#1F6366'
+          }
+        ]
+      },
+      options: chartNumberOptions('Kg')
+    });
+  }
+
+  function renderTable(data) {
+    const tbody = document.getElementById('tableBody');
+    let html = '';
+
+    data.forEach(r => {
+      html += `
+        <tr>
+          <td class="text-center fw-bold">${r.rw}</td>
+          <td class="text-end">${formatNumber(r.jumlahKK)}</td>
+          <td class="text-end">${formatNumber(r.totalResponden)}</td>
+          <td class="text-end">${formatPercent(r.persenTotalResponden)}</td>
+          <td class="text-end">${formatNumber(r.sudahMemilah)}</td>
+          <td class="text-end">${formatPercent(r.persenSudahMemilah)}</td>
+          <td class="text-end">${formatNumber(r.belumMemilah)}</td>
+          <td class="text-end">${formatPercent(r.persenBelumMemilah)}</td>
+          <td class="text-end">${formatNumber(r.organikKg)}</td>
+          <td class="text-end">${formatPercent(r.persenOrganik)}</td>
+          <td class="text-end">${formatNumber(r.anorganikKg)}</td>
+          <td class="text-end">${formatPercent(r.persenAnorganik)}</td>
+          <td class="text-end fw-bold">${formatNumber(r.totalTimbulan)}</td>
+        </tr>
+      `;
+    });
+
+    tbody.innerHTML = html;
+  }
+
+  function chartPercentOptions() {
+    return {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        y: {
+          beginAtZero: true,
+          max: 100,
+          ticks: {
+            callback: function(value) {
+              return value + '%';
+            }
+          }
+        }
+      },
+      plugins: {
+        tooltip: {
+          callbacks: {
+            label: function(context) {
+              return context.dataset.label + ': ' + formatPercent(context.raw);
+            }
+          }
+        },
+        legend: {
+          position: 'bottom'
+        }
+      }
+    };
+  }
+
+  function chartNumberOptions(suffix) {
+    return {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      },
+      plugins: {
+        tooltip: {
+          callbacks: {
+            label: function(context) {
+              return context.dataset.label + ': ' + formatNumber(context.raw) + ' ' + suffix;
+            }
+          }
+        },
+        legend: {
+          position: 'bottom'
+        }
+      }
+    };
+  }
+
+  function formatPercent(value) {
+    return Number(value || 0).toFixed(2) + '%';
+  }
+
+  function formatNumber(value) {
+    return Number(value || 0).toLocaleString('id-ID', {
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 2
+    });
+  }
+</script>
+
+</body>
+</html>
