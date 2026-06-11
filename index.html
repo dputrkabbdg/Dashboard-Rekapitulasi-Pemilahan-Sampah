@@ -40,6 +40,7 @@
       box-shadow: 0 8px 20px rgba(0,0,0,.12);
       overflow: hidden;
       height: 100%;
+      background: white;
     }
 
     .kpi-strip {
@@ -49,8 +50,8 @@
 
     .kpi-title {
       font-size: 13px;
-      color: #667;
-      font-weight: 600;
+      color: #556;
+      font-weight: 700;
       text-transform: uppercase;
     }
 
@@ -59,11 +60,13 @@
       font-weight: 800;
       color: #1F6366;
       margin-top: 6px;
+      line-height: 1.2;
     }
 
     .kpi-sub {
       font-size: 12px;
       color: #777;
+      margin-top: 6px;
     }
 
     .panel {
@@ -118,6 +121,16 @@
       color: #1F6366;
       font-weight: bold;
     }
+
+    @media (max-width: 768px) {
+      .kpi-value {
+        font-size: 24px;
+      }
+
+      .main-wrapper {
+        padding: 16px;
+      }
+    }
   </style>
 </head>
 
@@ -148,116 +161,81 @@
       Memuat data dashboard...
     </div>
 
-  <div class="row g-3 mb-4">
+    <div class="row g-3 mb-4">
 
-  <div class="col-xl-3 col-md-6">
-    <div class="card kpi-card">
-      <div class="kpi-strip"></div>
-      <div class="card-body">
-        <div class="kpi-title">Total Jumlah KK</div>
-        <div id="totalKK" class="kpi-value">0</div>
-        <div class="kpi-sub">Akumulasi dari 13 RW</div>
+      <div class="col-xl-3 col-md-6">
+        <div class="card kpi-card">
+          <div class="kpi-strip"></div>
+          <div class="card-body">
+            <div class="kpi-title">Total Jumlah KK</div>
+            <div id="totalKK" class="kpi-value">0</div>
+            <div class="kpi-sub">Akumulasi dari 13 RW</div>
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
 
-  <div class="col-xl-3 col-md-6">
-    <div class="card kpi-card">
-      <div class="kpi-strip"></div>
-      <div class="card-body">
-        <div class="kpi-title">Total Responden</div>
-        <div id="totalResponden" class="kpi-value">0</div>
-        <div id="avgResponden" class="kpi-sub">0% dari Total KK</div>
+      <div class="col-xl-3 col-md-6">
+        <div class="card kpi-card">
+          <div class="kpi-strip"></div>
+          <div class="card-body">
+            <div class="kpi-title">Total Responden</div>
+            <div id="totalResponden" class="kpi-value">0</div>
+            <div id="avgResponden" class="kpi-sub">0% dari Total KK</div>
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
 
-  <div class="col-xl-3 col-md-6">
-    <div class="card kpi-card">
-      <div class="kpi-strip"></div>
-      <div class="card-body">
-        <div class="kpi-title">Sudah Memilah</div>
-        <div id="totalSudah" class="kpi-value">0</div>
-        <div id="avgSudah" class="kpi-sub">0% dari Responden</div>
+      <div class="col-xl-3 col-md-6">
+        <div class="card kpi-card">
+          <div class="kpi-strip"></div>
+          <div class="card-body">
+            <div class="kpi-title">Sudah Memilah</div>
+            <div id="totalSudah" class="kpi-value">0</div>
+            <div id="avgSudah" class="kpi-sub">0% dari Responden</div>
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
 
-  <div class="col-xl-3 col-md-6">
-    <div class="card kpi-card">
-      <div class="kpi-strip"></div>
-      <div class="card-body">
-        <div class="kpi-title">Belum Memilah</div>
-        <div id="totalBelum" class="kpi-value">0</div>
-        <div id="avgBelum" class="kpi-sub">0% dari Responden</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="col-xl-4 col-md-6">
-    <div class="card kpi-card">
-      <div class="kpi-strip"></div>
-      <div class="card-body">
-        <div class="kpi-title">Timbulan Sampah Organik</div>
-        <div id="totalOrganikKg" class="kpi-value">0</div>
-        <div id="avgOrganik" class="kpi-sub">0% dari Total Timbulan</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="col-xl-4 col-md-6">
-    <div class="card kpi-card">
-      <div class="kpi-strip"></div>
-      <div class="card-body">
-        <div class="kpi-title">Timbulan Sampah Anorganik</div>
-        <div id="totalAnorganikKg" class="kpi-value">0</div>
-        <div id="avgAnorganik" class="kpi-sub">0% dari Total Timbulan</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="col-xl-4 col-md-12">
-    <div class="card kpi-card">
-      <div class="kpi-strip"></div>
-      <div class="card-body">
-        <div class="kpi-title">Total Timbulan Sampah</div>
-        <div id="totalTimbulanKg" class="kpi-value">0</div>
-        <div class="kpi-sub">Kg/Hari</div>
-      </div>
-    </div>
-  </div>
-
-</div>
-
-      <div class="col-md-3">
+      <div class="col-xl-3 col-md-6">
         <div class="card kpi-card">
           <div class="kpi-strip"></div>
           <div class="card-body">
             <div class="kpi-title">Belum Memilah</div>
-            <div id="avgBelum" class="kpi-value">0%</div>
-            <div id="totalBelum" class="kpi-sub">0 KK</div>
+            <div id="totalBelum" class="kpi-value">0</div>
+            <div id="avgBelum" class="kpi-sub">0% dari Responden</div>
           </div>
         </div>
       </div>
 
-      <div class="col-md-3">
+      <div class="col-xl-4 col-md-6">
         <div class="card kpi-card">
           <div class="kpi-strip"></div>
           <div class="card-body">
-            <div class="kpi-title">Sampah Organik</div>
-            <div id="avgOrganik" class="kpi-value">0%</div>
-            <div id="totalOrganikKg" class="kpi-sub">0 Kg/Hari</div>
+            <div class="kpi-title">Timbulan Sampah Organik</div>
+            <div id="totalOrganikKg" class="kpi-value">0</div>
+            <div id="avgOrganik" class="kpi-sub">0% dari Total Timbulan</div>
           </div>
         </div>
       </div>
 
-      <div class="col-md-3">
+      <div class="col-xl-4 col-md-6">
         <div class="card kpi-card">
           <div class="kpi-strip"></div>
           <div class="card-body">
-            <div class="kpi-title">Sampah Anorganik</div>
-            <div id="avgAnorganik" class="kpi-value">0%</div>
-            <div id="totalAnorganikKg" class="kpi-sub">0 Kg/Hari</div>
+            <div class="kpi-title">Timbulan Sampah Anorganik</div>
+            <div id="totalAnorganikKg" class="kpi-value">0</div>
+            <div id="avgAnorganik" class="kpi-sub">0% dari Total Timbulan</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-xl-4 col-md-12">
+        <div class="card kpi-card">
+          <div class="kpi-strip"></div>
+          <div class="card-body">
+            <div class="kpi-title">Total Timbulan Sampah</div>
+            <div id="totalTimbulanKg" class="kpi-value">0</div>
+            <div class="kpi-sub">Kg/Hari</div>
           </div>
         </div>
       </div>
@@ -381,26 +359,33 @@
 
     document.getElementById('loading').style.display = 'none';
 
-    const data = res.data;
-    const s = res.summary;
+    const data = res.data || [];
+    const s = res.summary || {};
 
-   document.getElementById('totalKK').innerText = formatNumber(s.totalKK);
-document.getElementById('totalResponden').innerText = formatNumber(s.totalResponden);
-document.getElementById('avgResponden').innerText = formatPercent(s.avgResponden) + ' dari Total KK';
+    const avgResponden =
+      s.avgResponden !== undefined
+        ? s.avgResponden
+        : Number(s.totalKK || 0) > 0
+          ? Number(s.totalResponden || 0) / Number(s.totalKK || 0) * 100
+          : 0;
 
-document.getElementById('totalSudah').innerText = formatNumber(s.totalSudah);
-document.getElementById('avgSudah').innerText = formatPercent(s.avgSudah) + ' dari Responden';
+    document.getElementById('totalKK').innerText = formatNumber(s.totalKK);
+    document.getElementById('totalResponden').innerText = formatNumber(s.totalResponden);
+    document.getElementById('avgResponden').innerText = formatPercent(avgResponden) + ' dari Total KK';
 
-document.getElementById('totalBelum').innerText = formatNumber(s.totalBelum);
-document.getElementById('avgBelum').innerText = formatPercent(s.avgBelum) + ' dari Responden';
+    document.getElementById('totalSudah').innerText = formatNumber(s.totalSudah);
+    document.getElementById('avgSudah').innerText = formatPercent(s.avgSudah) + ' dari Responden';
 
-document.getElementById('totalOrganikKg').innerText = formatNumber(s.totalOrganikKg) + ' Kg/Hari';
-document.getElementById('avgOrganik').innerText = formatPercent(s.avgOrganik) + ' dari Total Timbulan';
+    document.getElementById('totalBelum').innerText = formatNumber(s.totalBelum);
+    document.getElementById('avgBelum').innerText = formatPercent(s.avgBelum) + ' dari Responden';
 
-document.getElementById('totalAnorganikKg').innerText = formatNumber(s.totalAnorganikKg) + ' Kg/Hari';
-document.getElementById('avgAnorganik').innerText = formatPercent(s.avgAnorganik) + ' dari Total Timbulan';
+    document.getElementById('totalOrganikKg').innerText = formatNumber(s.totalOrganikKg) + ' Kg/Hari';
+    document.getElementById('avgOrganik').innerText = formatPercent(s.avgOrganik) + ' dari Total Timbulan';
 
-document.getElementById('totalTimbulanKg').innerText = formatNumber(s.totalTimbulanKg) + ' Kg/Hari';
+    document.getElementById('totalAnorganikKg').innerText = formatNumber(s.totalAnorganikKg) + ' Kg/Hari';
+    document.getElementById('avgAnorganik').innerText = formatPercent(s.avgAnorganik) + ' dari Total Timbulan';
+
+    document.getElementById('totalTimbulanKg').innerText = formatNumber(s.totalTimbulanKg) + ' Kg/Hari';
 
     const labels = data.map(r => 'RW ' + r.rw);
 
@@ -493,7 +478,7 @@ document.getElementById('totalTimbulanKg').innerText = formatNumber(s.totalTimbu
           }
         ]
       },
-      options: chartNumberOptions('Kg')
+      options: chartNumberOptions('Kg/Hari')
     });
   }
 
