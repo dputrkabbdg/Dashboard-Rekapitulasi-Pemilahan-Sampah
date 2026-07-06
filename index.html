@@ -5,130 +5,590 @@
   <title>Dashboard Sampah Desa Buahbatu</title>
 
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
   <style>
-    body {
-      background: #eef3f3;
-      font-family: Arial, sans-serif;
+    :root {
+      --primary: #0F4C5C;
+      --primary-dark: #0A3642;
+      --primary-light: #1A7A8A;
+      --primary-soft: #E8F4F6;
+      --accent: #D4A84B;
+      --accent-light: #F4E4BC;
+      --bg: #F5F7FA;
+      --surface: #FFFFFF;
+      --text: #1A2332;
+      --text-muted: #64748B;
+      --border: #E2E8F0;
+      --success: #10B981;
+      --warning: #F59E0B;
+      --danger: #EF4444;
+      --info: #3B82F6;
+      --organic: #10B981;
+      --anorganic: #EF4444;
+      --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.06);
+      --shadow-md: 0 4px 12px rgba(15, 23, 42, 0.08);
+      --shadow-lg: 0 10px 30px rgba(15, 23, 42, 0.10);
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
     }
 
-    .topbar {
-      background: #1F6366;
-      color: white;
-      padding: 22px 30px;
-      box-shadow: 0 4px 16px rgba(0,0,0,.25);
-    }
+    * { box-sizing: border-box; }
 
-    .topbar h3 {
+    html, body {
       margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background:
+        radial-gradient(circle at 10% 10%, rgba(15, 76, 92, 0.04) 0%, transparent 40%),
+        radial-gradient(circle at 90% 90%, rgba(212, 168, 75, 0.05) 0%, transparent 40%),
+        var(--bg);
+      font-family: 'Plus Jakarta Sans', 'Segoe UI', sans-serif;
+      color: var(--text);
+      font-size: 13px;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+    }
+
+    /* ===== GOVERNMENT RIBBON ===== */
+    .gov-ribbon {
+      background: linear-gradient(90deg, var(--primary-dark) 0%, var(--primary) 100%);
+      color: white;
+      padding: 6px 0;
+      font-size: 11px;
+      border-bottom: 2px solid var(--accent);
+    }
+
+    .gov-ribbon .container-fluid {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .gov-ribbon .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
       font-weight: 700;
-      letter-spacing: .4px;
+      letter-spacing: 0.3px;
     }
 
-    .topbar small {
-      opacity: .9;
+    .gov-ribbon .brand-icon {
+      width: 22px;
+      height: 22px;
+      background: var(--accent);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary-dark);
+      font-size: 13px;
     }
 
+    .gov-ribbon .meta {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+      opacity: 0.9;
+    }
+
+    .gov-ribbon .meta-item {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .gov-ribbon .meta-item i {
+      color: var(--accent);
+    }
+
+    /* ===== PAGE HEADER ===== */
+    .page-header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 18px 0;
+      box-shadow: var(--shadow-sm);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .page-header::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 300px;
+      height: 100%;
+      background: radial-gradient(circle, rgba(16, 185, 129, 0.06) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .page-header .container-fluid {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .page-title-wrap {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .page-title-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--success), #059669);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+      box-shadow: 0 6px 14px rgba(16, 185, 129, 0.3);
+      flex-shrink: 0;
+    }
+
+    .page-title {
+      font-size: 20px;
+      font-weight: 800;
+      margin: 0;
+      color: var(--text);
+      letter-spacing: -0.3px;
+    }
+
+    .page-subtitle {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin: 2px 0 0;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .page-subtitle .badge-village {
+      background: var(--primary-soft);
+      color: var(--primary);
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+    }
+
+    .btn-action {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-decoration: none;
+    }
+
+    .btn-action:hover {
+      background: var(--primary-soft);
+      border-color: var(--primary-light);
+      color: var(--primary);
+    }
+
+    .btn-action.primary {
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      border-color: var(--primary);
+      color: white;
+      box-shadow: 0 4px 10px rgba(15, 76, 92, 0.2);
+    }
+
+    .btn-action.primary:hover {
+      background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+      color: white;
+    }
+
+    /* ===== MAIN WRAPPER ===== */
     .main-wrapper {
-      padding: 24px;
+      padding: 20px 0 30px;
     }
 
+    /* ===== LOADING ===== */
+    .loading-box {
+      background: var(--surface);
+      border-radius: var(--radius-md);
+      padding: 24px;
+      box-shadow: var(--shadow-sm);
+      color: var(--primary);
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      border: 1px solid var(--border);
+    }
+
+    .loading-spinner {
+      width: 24px;
+      height: 24px;
+      border: 3px solid var(--primary-soft);
+      border-top-color: var(--primary);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* ===== KPI CARDS ===== */
     .kpi-card {
-      border: none;
-      border-radius: 18px;
-      box-shadow: 0 8px 20px rgba(0,0,0,.12);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-sm);
       overflow: hidden;
       height: 100%;
-      background: white;
+      background: var(--surface);
+      transition: all 0.25s ease;
+      position: relative;
+    }
+
+    .kpi-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+      border-color: var(--primary-light);
     }
 
     .kpi-strip {
-      height: 6px;
-      background: #1F6366;
+      height: 4px;
+      background: linear-gradient(90deg, var(--primary), var(--primary-light));
     }
 
+    .kpi-card.accent-green .kpi-strip {
+      background: linear-gradient(90deg, var(--success), #34D399);
+    }
+    .kpi-card.accent-red .kpi-strip {
+      background: linear-gradient(90deg, var(--danger), #F87171);
+    }
+    .kpi-card.accent-gold .kpi-strip {
+      background: linear-gradient(90deg, var(--accent), #F4E4BC);
+    }
+    .kpi-card.accent-info .kpi-strip {
+      background: linear-gradient(90deg, var(--info), #60A5FA);
+    }
+    .kpi-card.accent-organic .kpi-strip {
+      background: linear-gradient(90deg, #10B981, #6EE7B7);
+    }
+    .kpi-card.accent-anorganic .kpi-strip {
+      background: linear-gradient(90deg, #EF4444, #FCA5A5);
+    }
+
+    .kpi-body {
+      padding: 14px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .kpi-content {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .kpi-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      background: var(--primary-soft);
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+
+    .kpi-card.accent-green .kpi-icon { background: #D1FAE5; color: var(--success); }
+    .kpi-card.accent-red .kpi-icon { background: #FEE2E2; color: var(--danger); }
+    .kpi-card.accent-gold .kpi-icon { background: var(--accent-light); color: #92400E; }
+    .kpi-card.accent-info .kpi-icon { background: #DBEAFE; color: var(--info); }
+    .kpi-card.accent-organic .kpi-icon { background: #D1FAE5; color: var(--organic); }
+    .kpi-card.accent-anorganic .kpi-icon { background: #FEE2E2; color: var(--anorganic); }
+
     .kpi-title {
-      font-size: 13px;
-      color: #556;
+      font-size: 10.5px;
+      color: var(--text-muted);
       font-weight: 700;
       text-transform: uppercase;
+      letter-spacing: 0.4px;
+      line-height: 1.3;
+      margin-bottom: 6px;
     }
 
     .kpi-value {
-      font-size: 30px;
+      font-size: 22px;
       font-weight: 800;
-      color: #1F6366;
-      margin-top: 6px;
-      line-height: 1.2;
+      color: var(--primary-dark);
+      line-height: 1.1;
+      letter-spacing: -0.5px;
+      margin-bottom: 4px;
     }
+
+    .kpi-card.accent-green .kpi-value { color: var(--success); }
+    .kpi-card.accent-red .kpi-value { color: var(--danger); }
+    .kpi-card.accent-gold .kpi-value { color: #92400E; }
+    .kpi-card.accent-info .kpi-value { color: var(--info); }
+    .kpi-card.accent-organic .kpi-value { color: #047857; }
+    .kpi-card.accent-anorganic .kpi-value { color: #B91C1C; }
 
     .kpi-sub {
-      font-size: 12px;
-      color: #777;
-      margin-top: 6px;
+      font-size: 11px;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-weight: 600;
     }
 
+    .kpi-sub .trend-up { color: var(--success); }
+    .kpi-sub .trend-down { color: var(--danger); }
+
+    /* ===== PANELS ===== */
     .panel {
-      border: none;
-      border-radius: 18px;
-      box-shadow: 0 8px 20px rgba(0,0,0,.12);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-sm);
       overflow: hidden;
+      background: var(--surface);
+      height: 100%;
     }
 
     .panel-header {
-      background: white;
-      border-bottom: 1px solid #e5e5e5;
-      padding: 14px 18px;
+      background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+      color: white;
+      padding: 12px 16px;
       font-weight: 700;
-      color: #1F6366;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border: none;
+    }
+
+    .panel-header-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.18);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+
+    .panel-header-content {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .panel-header-title {
+      font-size: 13px;
+      font-weight: 700;
+      margin: 0;
+      line-height: 1.2;
+    }
+
+    .panel-header-subtitle {
+      font-size: 10px;
+      opacity: 0.75;
+      font-weight: 500;
+      margin-top: 2px;
     }
 
     .panel-body {
-      background: white;
-      padding: 18px;
+      background: var(--surface);
+      padding: 16px;
+    }
+
+    .chart-container {
+      position: relative;
+      height: 300px;
+    }
+
+    canvas {
+      max-height: 300px !important;
+    }
+
+    /* ===== TABLE ===== */
+    .table-wrap {
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+
+    .table {
+      margin-bottom: 0;
+      font-size: 12px;
     }
 
     .table thead th {
-      background: #1F6366;
+      background: linear-gradient(135deg, var(--primary-dark), var(--primary));
       color: white;
       text-align: center;
       vertical-align: middle;
-      font-size: 13px;
+      font-size: 10.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.35px;
+      padding: 10px 8px;
+      border: none;
+      white-space: nowrap;
     }
 
     .table tbody td {
       vertical-align: middle;
-      font-size: 13px;
+      padding: 9px 8px;
+      border-color: var(--border);
+      color: var(--text);
     }
 
+    .table tbody tr {
+      transition: background 0.15s;
+    }
+
+    .table tbody tr:hover {
+      background: var(--primary-soft);
+    }
+
+    .table tbody tr:nth-child(even) {
+      background: #FAFBFC;
+    }
+
+    .table tbody tr:nth-child(even):hover {
+      background: var(--primary-soft);
+    }
+
+    .rw-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--primary);
+      color: white;
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 700;
+      min-width: 48px;
+    }
+
+    /* ===== FOOTER ===== */
     .footer {
       text-align: center;
-      color: #777;
-      font-size: 12px;
-      padding: 20px;
+      color: var(--text-muted);
+      font-size: 11px;
+      padding: 20px 0 10px;
+      border-top: 1px solid var(--border);
+      margin-top: 20px;
     }
 
-    canvas {
-      max-height: 360px;
+    .footer strong {
+      color: var(--primary);
+      font-weight: 700;
     }
 
-    .loading-box {
-      background: white;
-      border-radius: 18px;
-      padding: 20px;
-      box-shadow: 0 8px 20px rgba(0,0,0,.12);
-      color: #1F6366;
-      font-weight: bold;
+    /* ===== SECTION HEADING ===== */
+    .section-heading {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--border);
     }
 
+    .section-heading .icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 9px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+      box-shadow: 0 4px 10px rgba(15, 76, 92, 0.2);
+    }
+
+    .section-heading .title {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--text);
+      margin: 0;
+    }
+
+    .section-heading .subtitle {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin: 0;
+      margin-left: auto;
+    }
+
+    /* ===== RESPONSIVE ===== */
     @media (max-width: 768px) {
       .kpi-value {
-        font-size: 24px;
+        font-size: 18px;
       }
 
       .main-wrapper {
-        padding: 16px;
+        padding: 14px 0;
+      }
+
+      .page-title {
+        font-size: 16px;
+      }
+
+      .chart-container {
+        height: 260px;
+      }
+
+      .gov-ribbon .meta {
+        display: none;
+      }
+
+      .table {
+        font-size: 11px;
+      }
+    }
+
+    /* ===== PRINT ===== */
+    @media print {
+      .gov-ribbon, .btn-action {
+        display: none !important;
+      }
+
+      body {
+        background: white;
+      }
+
+      .kpi-card, .panel {
+        box-shadow: none !important;
+        break-inside: avoid;
       }
     }
   </style>
@@ -136,188 +596,326 @@
 
 <body>
 
-  <div class="topbar">
-    <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
-      <div>
-        <h3>♻ Dashboard Rekapitulasi Pemilahan Sampah</h3>
-        <small>Desa Buahbatu — Monitoring Data Survey per RW</small>
+  <!-- Government Ribbon -->
+  <div class="gov-ribbon">
+    <div class="container-fluid px-4">
+      <div class="brand">
+        <div class="brand-icon"><i class="bi bi-tree-fill"></i></div>
+        <span>Desa Buahbatu — Sistem Informasi Pengelolaan Sampah</span>
+      </div>
+      <div class="meta">
+        <div class="meta-item">
+          <i class="bi bi-calendar-event"></i>
+          <span id="currentDate">-</span>
+        </div>
+        <div class="meta-item">
+          <i class="bi bi-clock"></i>
+          <span id="currentTime">-</span>
+        </div>
+        <div class="meta-item">
+          <i class="bi bi-shield-check"></i>
+          <span>Official Dashboard</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="container-fluid px-4">
+      <div class="page-title-wrap">
+        <div class="page-title-icon">
+          <i class="bi bi-recycle"></i>
+        </div>
+        <div>
+          <h1 class="page-title">Dashboard Rekapitulasi Pemilahan Sampah</h1>
+          <div class="page-subtitle">
+            Monitoring Data Survey per RW
+            <span class="badge-village">DESA BUAHBATU</span>
+          </div>
+        </div>
       </div>
 
-      <div>
-        <a
-          href="https://docs.google.com/spreadsheets/d/1RY0UQtkpOnZfxtM9-Uqt0nrRfMiviKZmrvvsvARadlc/edit?gid=738498756#gid=738498756"
-          target="_blank"
-          class="btn btn-light fw-bold"
-        >
-          📊 Buka Spreadsheet
+      <div class="d-flex gap-2 flex-wrap">
+        <a href="https://docs.google.com/spreadsheets/d/1RY0UQtkpOnZfxtM9-Uqt0nrRfMiviKZmrvvsvARadlc/edit?gid=738498756#gid=738498756"
+           target="_blank"
+           class="btn-action primary">
+          <i class="bi bi-table"></i> Buka Spreadsheet
         </a>
+        <button class="btn-action" onclick="window.print()">
+          <i class="bi bi-printer"></i> Cetak
+        </button>
+        <button class="btn-action" onclick="location.reload()">
+          <i class="bi bi-arrow-clockwise"></i> Refresh
+        </button>
       </div>
     </div>
   </div>
 
+  <!-- Main Content -->
   <div class="main-wrapper">
+    <div class="container-fluid px-4">
 
-    <div id="loading" class="loading-box mb-4">
-      Memuat data dashboard...
+      <div id="loading" class="loading-box mb-4">
+        <div class="loading-spinner"></div>
+        <div>Memuat data dashboard...</div>
+      </div>
+
+      <!-- KPI Cards -->
+      <div class="row g-3 mb-4">
+
+        <div class="col-xl-3 col-md-6">
+          <div class="kpi-card">
+            <div class="kpi-strip"></div>
+            <div class="kpi-body">
+              <div class="kpi-content">
+                <div class="kpi-title">Total Jumlah KK</div>
+                <div id="totalKK" class="kpi-value">0</div>
+                <div class="kpi-sub">
+                  <i class="bi bi-houses"></i>
+                  <span>Akumulasi dari 13 RW</span>
+                </div>
+              </div>
+              <div class="kpi-icon"><i class="bi bi-people-fill"></i></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6">
+          <div class="kpi-card accent-info">
+            <div class="kpi-strip"></div>
+            <div class="kpi-body">
+              <div class="kpi-content">
+                <div class="kpi-title">Total Responden</div>
+                <div id="totalResponden" class="kpi-value">0</div>
+                <div id="avgResponden" class="kpi-sub">
+                  <i class="bi bi-clipboard-data"></i>
+                  <span>0% dari Total KK</span>
+                </div>
+              </div>
+              <div class="kpi-icon"><i class="bi bi-person-check-fill"></i></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6">
+          <div class="kpi-card accent-green">
+            <div class="kpi-strip"></div>
+            <div class="kpi-body">
+              <div class="kpi-content">
+                <div class="kpi-title">Sudah Memilah</div>
+                <div id="totalSudah" class="kpi-value">0</div>
+                <div id="avgSudah" class="kpi-sub">
+                  <i class="bi bi-check2-circle"></i>
+                  <span>0% dari Responden</span>
+                </div>
+              </div>
+              <div class="kpi-icon"><i class="bi bi-check-circle-fill"></i></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6">
+          <div class="kpi-card accent-red">
+            <div class="kpi-strip"></div>
+            <div class="kpi-body">
+              <div class="kpi-content">
+                <div class="kpi-title">Belum Memilah</div>
+                <div id="totalBelum" class="kpi-value">0</div>
+                <div id="avgBelum" class="kpi-sub">
+                  <i class="bi bi-x-circle"></i>
+                  <span>0% dari Responden</span>
+                </div>
+              </div>
+              <div class="kpi-icon"><i class="bi bi-x-circle-fill"></i></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-xl-4 col-md-6">
+          <div class="kpi-card accent-organic">
+            <div class="kpi-strip"></div>
+            <div class="kpi-body">
+              <div class="kpi-content">
+                <div class="kpi-title">Timbulan Sampah Organik</div>
+                <div id="totalOrganikKg" class="kpi-value">0</div>
+                <div id="avgOrganik" class="kpi-sub">
+                  <i class="bi bi-leaf"></i>
+                  <span>0% dari Total Timbulan</span>
+                </div>
+              </div>
+              <div class="kpi-icon"><i class="bi bi-tree-fill"></i></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-xl-4 col-md-6">
+          <div class="kpi-card accent-anorganic">
+            <div class="kpi-strip"></div>
+            <div class="kpi-body">
+              <div class="kpi-content">
+                <div class="kpi-title">Timbulan Sampah Anorganik</div>
+                <div id="totalAnorganikKg" class="kpi-value">0</div>
+                <div id="avgAnorganik" class="kpi-sub">
+                  <i class="bi bi-box-seam"></i>
+                  <span>0% dari Total Timbulan</span>
+                </div>
+              </div>
+              <div class="kpi-icon"><i class="bi bi-box-fill"></i></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-xl-4 col-md-12">
+          <div class="kpi-card accent-gold">
+            <div class="kpi-strip"></div>
+            <div class="kpi-body">
+              <div class="kpi-content">
+                <div class="kpi-title">Total Timbulan Sampah</div>
+                <div id="totalTimbulanKg" class="kpi-value">0</div>
+                <div class="kpi-sub">
+                  <i class="bi bi-speedometer2"></i>
+                  <span>Kg/Hari — Total Keseluruhan</span>
+                </div>
+              </div>
+              <div class="kpi-icon"><i class="bi bi-speedometer"></i></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Charts -->
+      <div class="row g-3 mb-4">
+
+        <div class="col-lg-6">
+          <div class="panel">
+            <div class="panel-header">
+              <div class="panel-header-icon"><i class="bi bi-bar-chart-fill"></i></div>
+              <div class="panel-header-content">
+                <div class="panel-header-title">Persentase Pemilahan Sampah per RW</div>
+                <div class="panel-header-subtitle">Perbandingan warga sudah & belum memilah</div>
+              </div>
+            </div>
+            <div class="panel-body">
+              <div class="chart-container">
+                <canvas id="chartPemilahan"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-6">
+          <div class="panel">
+            <div class="panel-header">
+              <div class="panel-header-icon"><i class="bi bi-pie-chart-fill"></i></div>
+              <div class="panel-header-content">
+                <div class="panel-header-title">Komposisi Sampah Organik & Anorganik</div>
+                <div class="panel-header-subtitle">Persentase per RW berdasarkan jenis</div>
+              </div>
+            </div>
+            <div class="panel-body">
+              <div class="chart-container">
+                <canvas id="chartKomposisi"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-6">
+          <div class="panel">
+            <div class="panel-header">
+              <div class="panel-header-icon"><i class="bi bi-graph-up-arrow"></i></div>
+              <div class="panel-header-content">
+                <div class="panel-header-title">Timbulan Sampah Organik & Anorganik</div>
+                <div class="panel-header-subtitle">Volume dalam Kg/Hari per RW</div>
+              </div>
+            </div>
+            <div class="panel-body">
+              <div class="chart-container">
+                <canvas id="chartKg"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-6">
+          <div class="panel">
+            <div class="panel-header">
+              <div class="panel-header-icon"><i class="bi bi-bar-chart-line-fill"></i></div>
+              <div class="panel-header-content">
+                <div class="panel-header-title">Total Timbulan Sampah per RW</div>
+                <div class="panel-header-subtitle">Akumulasi Kg/Hari di setiap RW</div>
+              </div>
+            </div>
+            <div class="panel-body">
+              <div class="chart-container">
+                <canvas id="chartTotalTimbulan"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Table -->
+      <div class="panel">
+        <div class="panel-body">
+          <div class="section-heading">
+            <div class="icon"><i class="bi bi-table"></i></div>
+            <h5 class="title">Tabel Rekapitulasi Data Survey</h5>
+            <p class="subtitle">Desa Buahbatu — 13 RW</p>
+          </div>
+          <div class="table-responsive table-wrap">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th>RW</th>
+                  <th>Jumlah KK</th>
+                  <th>Total Responden</th>
+                  <th>% Responden</th>
+                  <th>Sudah Memilah</th>
+                  <th>% Sudah</th>
+                  <th>Belum Memilah</th>
+                  <th>% Belum</th>
+                  <th>Organik Kg/Hari</th>
+                  <th>% Organik</th>
+                  <th>Anorganik Kg/Hari</th>
+                  <th>% Anorganik</th>
+                  <th>Total Timbulan Kg</th>
+                </tr>
+              </thead>
+              <tbody id="tableBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer">
+        <strong>Dashboard Persampahan Desa Buahbatu</strong> · Monitoring Pengelolaan Sampah Berbasis RW<br>
+        <span style="opacity: 0.7;">Data bersumber dari Data Sensus Pengelolaan Sampah Desa Buah Batu</span>
+      </div>
+
     </div>
-
-    <div class="row g-3 mb-4">
-
-      <div class="col-xl-3 col-md-6">
-        <div class="card kpi-card">
-          <div class="kpi-strip"></div>
-          <div class="card-body">
-            <div class="kpi-title">Total Jumlah KK</div>
-            <div id="totalKK" class="kpi-value">0</div>
-            <div class="kpi-sub">Akumulasi dari 13 RW</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-xl-3 col-md-6">
-        <div class="card kpi-card">
-          <div class="kpi-strip"></div>
-          <div class="card-body">
-            <div class="kpi-title">Total Responden</div>
-            <div id="totalResponden" class="kpi-value">0</div>
-            <div id="avgResponden" class="kpi-sub">0% dari Total KK</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-xl-3 col-md-6">
-        <div class="card kpi-card">
-          <div class="kpi-strip"></div>
-          <div class="card-body">
-            <div class="kpi-title">Sudah Memilah</div>
-            <div id="totalSudah" class="kpi-value">0</div>
-            <div id="avgSudah" class="kpi-sub">0% dari Responden</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-xl-3 col-md-6">
-        <div class="card kpi-card">
-          <div class="kpi-strip"></div>
-          <div class="card-body">
-            <div class="kpi-title">Belum Memilah</div>
-            <div id="totalBelum" class="kpi-value">0</div>
-            <div id="avgBelum" class="kpi-sub">0% dari Responden</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-xl-4 col-md-6">
-        <div class="card kpi-card">
-          <div class="kpi-strip"></div>
-          <div class="card-body">
-            <div class="kpi-title">Timbulan Sampah Organik</div>
-            <div id="totalOrganikKg" class="kpi-value">0</div>
-            <div id="avgOrganik" class="kpi-sub">0% dari Total Timbulan</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-xl-4 col-md-6">
-        <div class="card kpi-card">
-          <div class="kpi-strip"></div>
-          <div class="card-body">
-            <div class="kpi-title">Timbulan Sampah Anorganik</div>
-            <div id="totalAnorganikKg" class="kpi-value">0</div>
-            <div id="avgAnorganik" class="kpi-sub">0% dari Total Timbulan</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-xl-4 col-md-12">
-        <div class="card kpi-card">
-          <div class="kpi-strip"></div>
-          <div class="card-body">
-            <div class="kpi-title">Total Timbulan Sampah</div>
-            <div id="totalTimbulanKg" class="kpi-value">0</div>
-            <div class="kpi-sub">Kg/Hari</div>
-          </div>
-        </div>
-      </div>
-
-    </div>
-
-    <div class="row g-4">
-
-      <div class="col-lg-6">
-        <div class="panel">
-          <div class="panel-header">Persentase Warga Sudah & Belum Memilah per RW</div>
-          <div class="panel-body">
-            <canvas id="chartPemilahan"></canvas>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-lg-6">
-        <div class="panel">
-          <div class="panel-header">Persentase Timbulan Sampah Organik & Anorganik per RW</div>
-          <div class="panel-body">
-            <canvas id="chartKomposisi"></canvas>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-lg-6">
-        <div class="panel">
-          <div class="panel-header">Timbulan Sampah Organik & Anorganik Kg/Hari</div>
-          <div class="panel-body">
-            <canvas id="chartKg"></canvas>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-lg-6">
-        <div class="panel">
-          <div class="panel-header">Total Timbulan Sampah per RW Kg/Hari</div>
-          <div class="panel-body">
-            <canvas id="chartTotalTimbulan"></canvas>
-          </div>
-        </div>
-      </div>
-
-    </div>
-
-    <div class="panel mt-4">
-      <div class="panel-header">Tabel Rekapitulasi Data Survey Desa Buahbatu</div>
-      <div class="panel-body">
-        <div class="table-responsive">
-          <table class="table table-bordered table-hover">
-            <thead>
-              <tr>
-                <th>RW</th>
-                <th>Jumlah KK</th>
-                <th>Total Responden</th>
-                <th>% Responden</th>
-                <th>Sudah Memilah</th>
-                <th>% Sudah</th>
-                <th>Belum Memilah</th>
-                <th>% Belum</th>
-                <th>Organik Kg/Hari</th>
-                <th>% Organik</th>
-                <th>Anorganik Kg/Hari</th>
-                <th>% Anorganik</th>
-                <th>Total Timbulan Kg</th>
-              </tr>
-            </thead>
-            <tbody id="tableBody"></tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-
-  </div>
-
-  <div class="footer">
-    Dashboard Persampahan Desa Buahbatu | Data bersumber dari Data Sensus Pengelolaan Sampah Desa Buah Batu
   </div>
 
 <script>
   const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxZiecpHaBY9kD8Uj8szikrbGmjsEYwCJmewTeLkrNwlpu8yfnTttWxxeLvRbQjYhq2Kg/exec';
+
+  // Update tanggal & waktu di ribbon
+  function updateDateTime() {
+    const now = new Date();
+    const days = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
+    const months = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+    const dateStr = `${days[now.getDay()]}, ${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`;
+    const timeStr = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+    const dateEl = document.getElementById('currentDate');
+    const timeEl = document.getElementById('currentTime');
+    if (dateEl) dateEl.textContent = dateStr;
+    if (timeEl) timeEl.textContent = timeStr + ' WIB';
+  }
+  updateDateTime();
+  setInterval(updateDateTime, 60000);
 
   let chartPemilahan;
   let chartKomposisi;
@@ -344,7 +942,7 @@
 
     script.onerror = function() {
       document.getElementById('loading').innerHTML =
-        'Gagal memuat data. Periksa URL Web App Apps Script dan akses deploy.';
+        '<i class="bi bi-exclamation-triangle-fill text-danger me-2"></i>Gagal memuat data. Periksa URL Web App Apps Script dan akses deploy.';
     };
 
     document.body.appendChild(script);
@@ -353,7 +951,7 @@
   function renderDashboard(res) {
     if (!res || res.status === 'error') {
       document.getElementById('loading').innerHTML =
-        'Terjadi kesalahan: ' + (res.message || 'Data tidak dapat dimuat');
+        '<i class="bi bi-exclamation-triangle-fill text-danger me-2"></i>Terjadi kesalahan: ' + (res.message || 'Data tidak dapat dimuat');
       return;
     }
 
@@ -371,21 +969,21 @@
 
     document.getElementById('totalKK').innerText = formatNumber(s.totalKK);
     document.getElementById('totalResponden').innerText = formatNumber(s.totalResponden);
-    document.getElementById('avgResponden').innerText = formatPercent(avgResponden) + ' dari Total KK';
+    document.getElementById('avgResponden').innerHTML = '<i class="bi bi-clipboard-data"></i><span>' + formatPercent(avgResponden) + ' dari Total KK</span>';
 
     document.getElementById('totalSudah').innerText = formatNumber(s.totalSudah);
-    document.getElementById('avgSudah').innerText = formatPercent(s.avgSudah) + ' dari Responden';
+    document.getElementById('avgSudah').innerHTML = '<i class="bi bi-check2-circle"></i><span>' + formatPercent(s.avgSudah) + ' dari Responden</span>';
 
     document.getElementById('totalBelum').innerText = formatNumber(s.totalBelum);
-    document.getElementById('avgBelum').innerText = formatPercent(s.avgBelum) + ' dari Responden';
+    document.getElementById('avgBelum').innerHTML = '<i class="bi bi-x-circle"></i><span>' + formatPercent(s.avgBelum) + ' dari Responden</span>';
 
-    document.getElementById('totalOrganikKg').innerText = formatNumber(s.totalOrganikKg) + ' Kg/Hari';
-    document.getElementById('avgOrganik').innerText = formatPercent(s.avgOrganik) + ' dari Total Timbulan';
+    document.getElementById('totalOrganikKg').innerText = formatNumber(s.totalOrganikKg) + ' Kg';
+    document.getElementById('avgOrganik').innerHTML = '<i class="bi bi-leaf"></i><span>' + formatPercent(s.avgOrganik) + ' dari Total Timbulan</span>';
 
-    document.getElementById('totalAnorganikKg').innerText = formatNumber(s.totalAnorganikKg) + ' Kg/Hari';
-    document.getElementById('avgAnorganik').innerText = formatPercent(s.avgAnorganik) + ' dari Total Timbulan';
+    document.getElementById('totalAnorganikKg').innerText = formatNumber(s.totalAnorganikKg) + ' Kg';
+    document.getElementById('avgAnorganik').innerHTML = '<i class="bi bi-box-seam"></i><span>' + formatPercent(s.avgAnorganik) + ' dari Total Timbulan</span>';
 
-    document.getElementById('totalTimbulanKg').innerText = formatNumber(s.totalTimbulanKg) + ' Kg/Hari';
+    document.getElementById('totalTimbulanKg').innerText = formatNumber(s.totalTimbulanKg) + ' Kg';
 
     const labels = data.map(r => 'RW ' + r.rw);
 
@@ -414,12 +1012,16 @@
           {
             label: 'Sudah Memilah (%)',
             data: persenSudah,
-            backgroundColor: '#1F6366'
+            backgroundColor: '#10B981',
+            borderRadius: 6,
+            borderSkipped: false
           },
           {
             label: 'Belum Memilah (%)',
             data: persenBelum,
-            backgroundColor: '#F28C28'
+            backgroundColor: '#EF4444',
+            borderRadius: 6,
+            borderSkipped: false
           }
         ]
       },
@@ -434,12 +1036,16 @@
           {
             label: 'Organik (%)',
             data: persenOrganik,
-            backgroundColor: '#2E8B57'
+            backgroundColor: '#10B981',
+            borderRadius: 6,
+            borderSkipped: false
           },
           {
             label: 'Anorganik (%)',
             data: persenAnorganik,
-            backgroundColor: '#C0392B'
+            backgroundColor: '#EF4444',
+            borderRadius: 6,
+            borderSkipped: false
           }
         ]
       },
@@ -454,12 +1060,16 @@
           {
             label: 'Organik Kg/Hari',
             data: organikKg,
-            backgroundColor: '#2E8B57'
+            backgroundColor: '#10B981',
+            borderRadius: 6,
+            borderSkipped: false
           },
           {
             label: 'Anorganik Kg/Hari',
             data: anorganikKg,
-            backgroundColor: '#C0392B'
+            backgroundColor: '#EF4444',
+            borderRadius: 6,
+            borderSkipped: false
           }
         ]
       },
@@ -474,7 +1084,9 @@
           {
             label: 'Total Timbulan Sampah Kg/Hari',
             data: totalTimbulan,
-            backgroundColor: '#1F6366'
+            backgroundColor: '#0F4C5C',
+            borderRadius: 6,
+            borderSkipped: false
           }
         ]
       },
@@ -489,19 +1101,19 @@
     data.forEach(r => {
       html += `
         <tr>
-          <td class="text-center fw-bold">${r.rw}</td>
-          <td class="text-end">${formatNumber(r.jumlahKK)}</td>
+          <td class="text-center"><span class="rw-badge">RW ${r.rw}</span></td>
+          <td class="text-end fw-semibold">${formatNumber(r.jumlahKK)}</td>
           <td class="text-end">${formatNumber(r.totalResponden)}</td>
           <td class="text-end">${formatPercent(r.persenTotalResponden)}</td>
-          <td class="text-end">${formatNumber(r.sudahMemilah)}</td>
+          <td class="text-end fw-semibold" style="color: var(--success);">${formatNumber(r.sudahMemilah)}</td>
           <td class="text-end">${formatPercent(r.persenSudahMemilah)}</td>
-          <td class="text-end">${formatNumber(r.belumMemilah)}</td>
+          <td class="text-end fw-semibold" style="color: var(--danger);">${formatNumber(r.belumMemilah)}</td>
           <td class="text-end">${formatPercent(r.persenBelumMemilah)}</td>
           <td class="text-end">${formatNumber(r.organikKg)}</td>
           <td class="text-end">${formatPercent(r.persenOrganik)}</td>
           <td class="text-end">${formatNumber(r.anorganikKg)}</td>
           <td class="text-end">${formatPercent(r.persenAnorganik)}</td>
-          <td class="text-end fw-bold">${formatNumber(r.totalTimbulan)}</td>
+          <td class="text-end fw-bold" style="color: var(--primary);">${formatNumber(r.totalTimbulan)}</td>
         </tr>
       `;
     });
@@ -520,12 +1132,29 @@
           ticks: {
             callback: function(value) {
               return value + '%';
-            }
+            },
+            font: { size: 10, weight: '600' }
+          },
+          grid: {
+            color: 'rgba(0,0,0,0.05)'
+          }
+        },
+        x: {
+          ticks: {
+            font: { size: 10, weight: '700' }
+          },
+          grid: {
+            display: false
           }
         }
       },
       plugins: {
         tooltip: {
+          backgroundColor: '#0F4C5C',
+          padding: 10,
+          titleFont: { size: 11, weight: '700' },
+          bodyFont: { size: 11 },
+          cornerRadius: 8,
           callbacks: {
             label: function(context) {
               return context.dataset.label + ': ' + formatPercent(context.raw);
@@ -533,7 +1162,13 @@
           }
         },
         legend: {
-          position: 'bottom'
+          position: 'bottom',
+          labels: {
+            boxWidth: 12,
+            boxHeight: 12,
+            padding: 12,
+            font: { size: 11, weight: '600' }
+          }
         }
       }
     };
@@ -545,11 +1180,30 @@
       maintainAspectRatio: false,
       scales: {
         y: {
-          beginAtZero: true
+          beginAtZero: true,
+          ticks: {
+            font: { size: 10, weight: '600' }
+          },
+          grid: {
+            color: 'rgba(0,0,0,0.05)'
+          }
+        },
+        x: {
+          ticks: {
+            font: { size: 10, weight: '700' }
+          },
+          grid: {
+            display: false
+          }
         }
       },
       plugins: {
         tooltip: {
+          backgroundColor: '#0F4C5C',
+          padding: 10,
+          titleFont: { size: 11, weight: '700' },
+          bodyFont: { size: 11 },
+          cornerRadius: 8,
           callbacks: {
             label: function(context) {
               return context.dataset.label + ': ' + formatNumber(context.raw) + ' ' + suffix;
@@ -557,7 +1211,13 @@
           }
         },
         legend: {
-          position: 'bottom'
+          position: 'bottom',
+          labels: {
+            boxWidth: 12,
+            boxHeight: 12,
+            padding: 12,
+            font: { size: 11, weight: '600' }
+          }
         }
       }
     };
